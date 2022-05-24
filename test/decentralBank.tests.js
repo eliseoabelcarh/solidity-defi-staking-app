@@ -82,26 +82,27 @@ contract('DecentralBank', ([owner, customer]) => {
            assert.equal('true',result.toString(),'customer is staking or not after staking')
       
             // Issue Tokens
-            // await decentralBank.issueTokens({from: owner})
+           await decentralBank.issueTokens({from:owner})
+           
+           // Ensure Only The Owner Can Issue Tokens
+           await decentralBank.issueTokens({from:customer}).should.be.rejected
 
-            // // Ensure Only The Owner Can Issue Tokens
-            // await decentralBank.issueTokens({from: customer}).should.be.rejected;
+// Unstake Tokens
+           await decentralBank.unstakeTokens({from:customer})
+    
 
-            // // Unstake Tokens
-            // await decentralBank.unstakeTokens({from: customer})
+            // Check Unstaking Balances- recover tokens into his wallet
 
-            // // Check Unstaking Balances
-
-            // result = await tether.balanceOf(customer)
-            // assert.equal(result.toString(), tokens('100'), 'customer mock wallet balance after unstaking')     
+            result = await tether.balanceOf(customer)
+            assert.equal(result.toString(), tokens('100'), 'customer mock wallet balance after unstaking')     
             
-            // // Check Updated Balance of Decentral Bank
-            // result = await tether.balanceOf(decentralBank.address)
-            // assert.equal(result.toString(), tokens('0'), 'decentral bank mock wallet balance after staking from customer')     
+            // Check Updated Balance of Decentral Bank
+            result = await tether.balanceOf(decentralBank.address)
+            assert.equal(result.toString(), tokens('0'), 'decentral bank mock wallet balance after staking from customer')     
             
-            // // Is Staking Update
-            // result = await decentralBank.isStaking(customer)
-            // assert.equal(result.toString(), 'false', 'customer is no longer staking after unstaking')
+            // Is Staking Update
+            result = await decentralBank.isStaking(customer)
+            assert.equal(result.toString(), 'false', 'customer is no longer staking after unstaking')
         })
     })
     })

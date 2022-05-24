@@ -38,6 +38,24 @@ contract DecentralBank {
         hasStaked[msg.sender] = true;
     }
 
+
+
+
+ // issue rewards
+    function issueTokens() public {
+        // Only owner can call this function
+        require(msg.sender == owner, "caller must be the owner");
+        // issue tokens to all stakers
+        for (uint256 i = 0; i < stakers.length; i++) {
+            address recipient = stakers[i];
+            uint256 balance = stakingBalance[recipient] / 9;
+            if (balance > 0) {
+                rwd.transfer(recipient, balance);
+            }
+        }
+    }
+
+
     // unstake tokens
     function unstakeTokens() public {
         uint256 balance = stakingBalance[msg.sender];
@@ -51,17 +69,5 @@ contract DecentralBank {
         isStaking[msg.sender] = false;
     }
 
-    // issue rewards
-    function issueTokens() public {
-        // Only owner can call this function
-        require(msg.sender == owner, "caller must be the owner");
-        // issue tokens to all stakers
-        for (uint256 i = 0; i < stakers.length; i++) {
-            address recipient = stakers[i];
-            uint256 balance = stakingBalance[recipient] / 9;
-            if (balance > 0) {
-                rwd.transfer(recipient, balance);
-            }
-        }
-    }
+   
 }
