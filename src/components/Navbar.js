@@ -6,6 +6,7 @@ import Col from "react-bootstrap/Col";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import bank from "../bank.png";
+
 export default class Navbars extends Component {
   render() {
     return (
@@ -25,6 +26,7 @@ export default class Navbars extends Component {
             <Nav.Link href="#deets">Account Number: {this.props.account}</Nav.Link>
           </Nav>
         </Container>
+  
       </Navbar>
     );
   }
