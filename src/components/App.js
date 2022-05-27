@@ -13,6 +13,8 @@ export default class App extends Component {
     await this.loadBlockchainData();
   }
 
+  activarLoadingSpinner = (value) => this.setState({loading:value})
+
   async loadWeb3() {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -64,6 +66,7 @@ export default class App extends Component {
         decentralBankData.address
       );
       this.setState({ decentralBank });
+      console.log("deentralBank OBJECT ", decentralBank);
       let stakingBalance = await decentralBank.methods
         .stakingBalance(this.state.account)
         .call();
@@ -76,9 +79,45 @@ export default class App extends Component {
       );
     }
 
-    this.setState({ loading: false });
+    this.activarLoadingSpinner(false)
   }
 
+  
+  
+  //staking function
+  stakeTokens = (amount) => {
+    this.activarLoadingSpinner(true)
+    this.state.tether.methods.approve(this.state.decentralBank._address,amount).send({from:this.state.account}).on('transactionHash', (hash)=>{
+        this.state.decentralBank.methods.depositTokens(amount).send({from:this.state.account}).on('transactionHash', (hash)=>{
+            this.activarLoadingSpinner(false)
+        })
+    })
+  }
+
+/* 
+  stakeTokens = (amount) => {
+    this.activarLoadingSpinner(true)
+    this.state.tether.methods.approve(this.state.decentralBank._address, amount).send({from: this.state.account}).on('transactionHash', (hash) => {
+      this.state.decentralBank.methods.depositTokens(amount).send({from: this.state.account}).on('transactionHash', (hash) => {
+        this.activarLoadingSpinner(false)
+      })
+    }) 
+  }
+ */
+
+  //unstake tokens
+
+  unstakeTokens = () =>{
+    this.activarLoadingSpinner(true)
+    this.state.decentralBank.methods.unstakeTokens().send({from:this.state.account}).on('transactionHash', (hash)=>{
+        this.activarLoadingSpinner(false)
+    })
+
+  }
+  
+  
+  
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -94,12 +133,27 @@ export default class App extends Component {
   }
 
   render() {
-    const spinnerLoading = <div style={{display:'flex', justifyContent:"center", alignItems:"center", minHeight:"100vh"}}><Spinner animation="grow" /></div>;
-    const mainContent = <Main
-    tetherBalance={this.state.tetherBalance} 
-    rwdBalance ={this.state.rwdBalance}
-    stakingBalance = {this.state.stakingBalance}
-    />
+    const spinnerLoading = (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <Spinner animation="grow" />
+      </div>
+    );
+    const mainContent = (
+      <Main
+        tetherBalance={this.state.tetherBalance}
+        rwdBalance={this.state.rwdBalance}
+        stakingBalance={this.state.stakingBalance}
+        stakeTokens= {this.stakeTokens}
+        unstakeTokens = {this.unstakeTokens}
+      />
+    );
     return (
       <div>
         <Navbars account={this.state.account} />
