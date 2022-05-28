@@ -10,6 +10,7 @@ import {
   Form,
   Badge,
 } from "react-bootstrap";
+import Airdrop from "./Airdrop";
 
 export default class Main extends Component {
   state = {
@@ -113,9 +114,7 @@ const withdraw = () => {
                   Deposit
                 </Button>
                 <Button variant="secondary" onClick={withdraw}>Withdraw</Button>
-                <p className="fw-bolder mt-3" style={{ fontSize: "0.8rem" }}>
-                  AIRDROP <Badge bg="secondary">0:20</Badge>
-                </p>
+               <Airdrop stakingBalance={stakingBalance}/>
               </Stack>
             </Form>
           </Card.Body>

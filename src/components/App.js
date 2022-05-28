@@ -7,6 +7,7 @@ import DecentralBank from "../truffle_abis/DecentralBank.json";
 import Spinner from "react-bootstrap/Spinner";
 import Main from "../components/Main";
 
+
 export default class App extends Component {
   async UNSAFE_componentWillMount() {
     await this.loadWeb3();
