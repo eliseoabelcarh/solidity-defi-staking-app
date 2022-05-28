@@ -1,3 +1,5 @@
 # Defi project yield farming
 
-## En proceso de subir screenshots. (24/5/2022)
+
+### Screenshots
+![Screenshot](./src/previa1.png)

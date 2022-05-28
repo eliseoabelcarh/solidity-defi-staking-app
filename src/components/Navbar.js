@@ -16,11 +16,11 @@ export default class Navbars extends Component {
             <img
               alt=""
               src={bank}
-              width="50"
+              width="30"
               height="30"
               className="d-inline-block align-top"
             />{" "}
-            Yield Farming
+            Yield Farming (Decentral Bank)
           </Navbar.Brand>
           <Nav>
             <Nav.Link href="#deets">Account Number: {this.props.account}</Nav.Link>
